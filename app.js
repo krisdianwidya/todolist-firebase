@@ -1,22 +1,44 @@
-let todoList = ''
+let todoList = '';
+let currentUser = null;
 const listContainer = document.querySelector('.todo-list');
+const loggedinItem = document.querySelector('.loggedin-item');
+const loggedoutItems = document.querySelectorAll('.loggedout-item');
 
-db.collection('todos').orderBy('title').onSnapshot(snapshot => {
-    let changes = snapshot.docChanges();
-    changes.forEach(({ type, doc }) => {
-        if (type === 'added') {
-            todoList += listUI(doc.data(), doc.id);
-            listContainer.innerHTML = todoList;
-        } else if (type === 'removed') {
-            let li = document.querySelector(`[data-id=${doc.id}]`);
-            li.remove();
-        } else if (type === 'modified') {
-            let li = document.querySelector(`[data-id=${doc.id}]`);
-            li.querySelector('span').textContent = doc.data().title;
-        }
+function setupUI(user) {
+    if (user) {
+        loggedinItem.style.display = 'block';
+        loggedoutItems.forEach(item => item.style.display = 'none');
+    } else {
+        loggedoutItems.forEach(item => item.style.display = 'block');
+        loggedinItem.style.display = 'none';
+    }
+}
+
+function getTodos() {
+    currentUser = auth.currentUser;
+    if (currentUser === null) {
+        const todoContainer = document.querySelector('.todo-container');
+        todoContainer.innerHTML = `<h3>Please login to get todo list</h3>`;
+        return;
+    }
+
+    db.collection('todos').orderBy('title').onSnapshot(snapshot => {
+        let changes = snapshot.docChanges();
+        changes.forEach(({ type, doc }) => {
+            if (type === 'added') {
+                todoList += listUI(doc.data(), doc.id);
+                listContainer.innerHTML = todoList;
+            } else if (type === 'removed') {
+                let li = document.querySelector(`[data-id=${doc.id}]`);
+                li.remove();
+            } else if (type === 'modified') {
+                let li = document.querySelector(`[data-id=${doc.id}]`);
+                li.querySelector('span').textContent = doc.data().title;
+            }
+        });
+
     });
-
-});
+}
 
 function listUI(list, id) {
     return `

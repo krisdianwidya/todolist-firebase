@@ -1,3 +1,8 @@
+auth.onAuthStateChanged(user => {
+    getTodos();
+    setupUI(user);
+});
+
 // signup
 const btnSignup = document.querySelector('#btn-signup');
 
@@ -13,10 +18,6 @@ btnSignup.addEventListener('click', () => {
         });
 });
 // end signup
-
-auth.onAuthStateChanged(user => {
-    console.log(user);
-});
 
 // logout
 const logout = document.querySelector('#logout');

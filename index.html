@@ -30,19 +30,21 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" id="logout" href="#!">Logout</a>
+                    <a class="nav-link loggedin-item" id="logout" href="#!">Logout</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#!" data-toggle="modal" data-target="#modal-login">Login</a>
+                    <a class="nav-link loggedout-item" href="#!" data-toggle="modal"
+                        data-target="#modal-login">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#!" data-toggle="modal" data-target="#modal-signup">Sign Up</a>
+                    <a class="nav-link loggedout-item" href="#!" data-toggle="modal" data-target="#modal-signup">Sign
+                        Up</a>
                 </li>
             </ul>
         </div>
     </nav>
     <div class="container d-flex justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-4 todo-container">
             <h1 class="text-center my-5 title">Todo List</h1>
             <div class="input-group mb-3">
                 <input type="text" class="form-control" id="todo-input" placeholder="Write your task here..">

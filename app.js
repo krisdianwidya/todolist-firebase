@@ -1,28 +1,31 @@
 let todoList = '';
 let currentUser = null;
 const listContainer = document.querySelector('.todo-list');
-const loggedinItem = document.querySelector('.loggedin-item');
+const loggedinItems = document.querySelectorAll('.loggedin-item');
 const loggedoutItems = document.querySelectorAll('.loggedout-item');
 
 function setupUI(user) {
     if (user) {
-        loggedinItem.style.display = 'block';
+        loggedinItems.forEach(item => item.style.display = 'block');
         loggedoutItems.forEach(item => item.style.display = 'none');
     } else {
         loggedoutItems.forEach(item => item.style.display = 'block');
-        loggedinItem.style.display = 'none';
+        loggedinItems.forEach(item => item.style.display = 'none');
     }
 }
 
 function getTodos() {
     currentUser = auth.currentUser;
+
+    document.querySelector('#user-email').innerHTML = (currentUser !== null ? currentUser.email : '');
+
     if (currentUser === null) {
         const todoContainer = document.querySelector('.todo-container');
         todoContainer.innerHTML = `<h3>Please login to get todo list</h3>`;
         return;
     }
 
-    db.collection('todos').orderBy('title').onSnapshot(snapshot => {
+    db.collection('alltodos').doc(currentUser.uid).collection('todos').orderBy('title').onSnapshot(snapshot => {
         let changes = snapshot.docChanges();
         changes.forEach(({ type, doc }) => {
             if (type === 'added') {
@@ -60,7 +63,7 @@ const inputTodo = document.querySelector('#todo-input');
 const btnAdd = document.querySelector('#button-add');
 
 btnAdd.addEventListener('click', () => {
-    db.collection('todos').add({
+    db.collection('alltodos').doc(currentUser.uid).collection('todos').add({
         title: inputTodo.value
     });
     inputTodo.value = '';
@@ -70,7 +73,7 @@ btnAdd.addEventListener('click', () => {
 document.addEventListener('click', function (e) {
     if (e.target.parentElement.classList.contains('btn-del')) {
         const todoId = e.target.parentElement.parentElement.parentElement.dataset.id;
-        db.collection('todos').doc(todoId).delete();
+        db.collection('alltodos').doc(currentUser.uid).collection('todos').doc(todoId).delete();
     }
 });
 
@@ -86,7 +89,7 @@ document.addEventListener('click', function (e) {
 
         btnUpdate.addEventListener('click', () => {
             if (inputUpdate !== '') {
-                db.collection('todos').doc(todoId).update({
+                db.collection('alltodos').doc(currentUser.uid).collection('todos').doc(todoId).update({
                     title: inputUpdate.value
                 });
             }

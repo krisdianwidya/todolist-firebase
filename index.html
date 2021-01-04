@@ -17,6 +17,7 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
     <title>Todo List</title>
 </head>
 
@@ -89,12 +90,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control mb-2" id="email" placeholder="Email" required>
+                    <input type="email" class="form-control mb-2" id="email" placeholder="Email" required>
                     <input type="password" class="form-control" id="password" placeholder="Password" required>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-update" data-dismiss="modal">Login</button>
+                    <button type="button" class="btn btn-primary" id="btn-login" data-dismiss="modal">Login</button>
                 </div>
             </div>
         </div>
@@ -111,12 +112,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control mb-2" id="email-signup" placeholder="Email" required>
+                    <input type="email" class="form-control mb-2" id="email-signup" placeholder="Email" required>
                     <input type="password" class="form-control" id="password-signup" placeholder="Password" required>
+                    <div class="error text-danger">
+
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-update" data-dismiss="modal">Sign Up</button>
+                    <button type="button" class="btn btn-primary" id="btn-signup">Sign Up</button>
                 </div>
             </div>
         </div>
@@ -142,9 +146,11 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const auth = firebase.auth();
     </script>
 
     <script src="app.js"></script>
+    <script src="auth.js"></script>
 </body>
 
 </html>
